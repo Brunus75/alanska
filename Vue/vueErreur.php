@@ -1,3 +1,3 @@
-<?php $this->titre = " Un Dimancoir en Alaska - Erreur !"; ?>
+<?php $this->titre = " Un Dimanche soir en Alaska - Erreur !"; ?>
 
 <p><?= $msgErreur ?></p>
