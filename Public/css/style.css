@@ -1,0 +1,253 @@
+body {
+background-color: #ADCBE3;
+    margin-top: 50px;
+}
+
+h3 {
+    color: #002A4B
+}
+
+h2 {
+    color: #00366A;
+}
+
+p {
+    color: grey;
+}
+
+                /* - Classes - */
+
+.reponseCommentaire {
+    font-size: 10px;
+}
+.validerSignalerCommentaire {
+    font-size: 10px;
+    background: darkgrey;
+    border-color: grey;
+    width: 70px;
+    margin-left: 20px;
+}
+
+.avertirMessageCommentaire {
+    color: dodgerblue;
+    font-style : italic;
+}
+
+
+.contenuCommentaire {
+    color: #337ab7;
+}
+
+.container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.img-responsive {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.indent {
+    border: 1px solid #cfd7dd;
+    padding: 10px;
+    margin-top : 20px;
+    margin-bottom : 3px;
+    margin-left: 30px;
+    margin-right: 30px;
+    background-color: rgba(207, 215, 221, 0.2);
+}
+
+.motdepasse {
+    font-size: 10px;
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.page{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.repondre {
+    background-color: blue;
+}
+
+.signaler {
+    margin-left: 30px;
+}
+
+.titre {
+    padding-left: 5%;
+    padding-top: 30px;
+    padding-right: 5%;
+}
+
+.titreArticle {
+    color: #337ab7;
+}
+
+.titreArticle2 {
+    color: #2845FF;
+}
+
+                        /* - Attributs - */
+
+#com_author {
+    margin-right: 10px;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+#boutonmembre {
+    font-size: 10px;
+    float: left;
+}
+
+#com_content {
+    background-color: white;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 30px;
+    margin-bottom : 60px;
+}
+
+#titreReponse {
+    color: #2845FF;
+}
+
+#episodes {
+    text-align: right;
+    margin-right: 20px;
+}
+
+#flash{
+    padding-top: 40px;
+    color: #911569;
+    font-size: 18px;
+    margin-left: 5%;
+    text-align:center;
+}
+
+#footer {
+    background-color: lightgrey;
+    padding: 20px;
+
+    text-align:left ;
+    position: relative;
+}
+
+#identifiant {
+
+    margin-right : 10px;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+#Alanska {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    width: 110px;
+}
+
+#motdepasse{
+
+    margin-right : 10px;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+#membre {
+    float: left;
+    margin-right : 10px;
+    width: 200px;
+}
+
+#user_name{
+
+    margin-right: 10px;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+#user_password {
+    float: left;
+    margin-right : 10px;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+#user_firstname {
+
+    margin-right: 10px;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+#txtArticle {
+    margin-left: 2%;
+    color: #1e9424;
+    margin-right: 2%;
+}
+
+#txtModifierArticle {
+    margin-left: 2%;
+    color: #ff1210;
+    margin-right: 2%;
+}
+
+#user_pseudo {
+    margin-right: 10px;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+                                /* - @madia - */
+
+@media screen and (max-width: 768px) {
+
+    #com_content {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .page {
+        margin-left: 5%;
+        margin-right: 5%;
+        padding-top: 20px;
+    }
+
+    .indent {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .table-hover tr th {
+        display: none;
+    }
+
+    .table-hover tr td {
+        float: left;
+        width: 100%;
+        border: none !important;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .table-hover tr{
+        border-bottom: 2px solid #edf0f2;
+        border-top: 2px solid #edf0f2;
+    }
+}
+
