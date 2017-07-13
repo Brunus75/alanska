@@ -15,8 +15,8 @@ class ControleurArticle
     public
     function __construct()
     {
-        $this->article = new Article();
-        $this->commentaire = new Commentaire();
+        $this->article = new ArticleRepository();
+        $this->commentaire = new CommentaireRepository();
     }
 
     // Affiche les détails sur un article
@@ -32,7 +32,7 @@ class ControleurArticle
         $commentaires = $this->commentaire->getCommentaires($idArticle);
         $vue = new Vue("Article");
         $vue->generer(
-            array ('article' => $article, 'commentaires' => $commentaires, "commentaireModele" => $this->commentaire)
+            array ('ArticleRepository' => $article, 'commentaires' => $commentaires, "commentaireModele" => $this->commentaire)
         );
     }
 }

@@ -11,7 +11,7 @@ class ControleurAccueil
     public
     function __construct()
     {
-        $this->article = new Article();
+        $this->article = new ArticleRepository();
     }
 
     // Affiche la liste des articles publiés

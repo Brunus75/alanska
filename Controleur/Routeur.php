@@ -51,8 +51,8 @@ class Routeur
                         break;
 
                     // Afficher de la page d'un commentaire avec formulaire
-                    case 'commentaire' :
-                        $idCommentaire = intval($this->getParametre($_GET, 'com_id'));
+                    case 'CommentaireRepository' :
+                        $idCommentaire = intval($_GET['com_id']);
                         if ($idCommentaire != 0) {
                             $this->controlCommentaire->commentaire($idCommentaire);
                         } else
@@ -60,8 +60,8 @@ class Routeur
                         break;
 
                     //Afficher la page d'un article
-                    case 'article' :
-                        $idArticle = intval($this->getParametre($_GET, 'art_id'));
+                    case 'ArticleRepository' :
+                        $idArticle = intval($_GET['art_id']);
                         if ($idArticle != 0) {
                             $this->controlArticle->article($idArticle);
                         } else
@@ -79,10 +79,8 @@ class Routeur
                     // Commenter un article
                     case 'commenter' :
 
-                        $com_author = $this->getParametre($_POST, 'com_author');
-                        $contenu = $this->getParametre($_POST, 'com_content');
-                        $idArticle = $this->getParametre($_POST, 'art_id');
-                        $this->controlCommentaire->commenter($com_author, $contenu, $idArticle);
+
+                        $this->controlCommentaire->commenter();
                         break;
 
 
@@ -91,11 +89,8 @@ class Routeur
                     // Répondre à un commentaire
                     case 'repondre' :
 
-                        $com_author = $this->getParametre($_POST, 'com_author');
-                        $contenu = $this->getParametre($_POST, 'com_content');
-                        $idArticle = $this->getParametre($_POST, 'art_id');
-                        $idCommentaire = $this->getParametre($_POST, 'com_id');
-                        $this->controlCommentaire->repondre($com_author, $contenu, $idArticle, $idCommentaire);
+
+                        $this->controlCommentaire->repondre();
                         break;
 
                     // Signaler un commentaire
@@ -125,7 +120,7 @@ class Routeur
                     // Afficher la page modifier Article avec le article à modifier
                     case 'modifierArticle':
 
-                        $idArticle = intval($this->getParametre($_GET, 'art_id'));
+                        $idArticle = intval($_GET['art_id']);
                         if ($idArticle != 0) {
                             $this->controlAdmin->modifierArticle($idArticle);
                         }
@@ -151,19 +146,15 @@ class Routeur
                     // Inscription
                     case 'inscription' :
 
-                        $user_firstname = $this->getParametre($_POST, 'user_firstname');
-                        $user_name = $this->getParametre($_POST, 'user_name');
-                        $user_pseudo = $this->getParametre($_POST, 'user_pseudo');
-                        $user_password = $this->getParametre($_POST, 'user_password');
-                        $this->controlUser->inscription($user_firstname, $user_name, $user_pseudo, $user_password);
+
+                        $this->controlUser->inscription();
                         break;
 
                     // Connection
                     case 'connexion' :
 
-                        $user_pseudo = $this->getParametre($_POST, 'user_pseudo');
-                        $user_password = $this->getParametre($_POST, 'user_password');
-                        $this->controlAuthentif->connexion($user_pseudo, $user_password);
+
+                        $this->controlAuthentif->connexion();
                         break;
 
                     // Déconnection
@@ -184,20 +175,16 @@ class Routeur
                     // Ajout
                     case 'addArticle' :
 
-                        $art_title = $this->getParametre($_POST, 'art_title');
-                        $contenu = $this->getParametre($_POST, 'art_content');
-                        $action = $this->getParametre($_POST, 'action');
-                        $this->controlAdmin->addArticle($art_title, $contenu, $action);
+
+                        $this->controlAdmin->addArticle();
                         break;
 
                     // Modification : non validé  ou validé
                     case 'updateArticle' :
 
-                        $idArticle = intval($this->getParametre($_GET, 'art_id'));
-                        $art_title = $this->getParametre($_POST, 'art_title');
-                        $contenu = $this->getParametre($_POST, 'art_content');
-                        $action = $this->getParametre($_POST, 'action');
-                        $this->controlAdmin->updateArticle($idArticle, $art_title, $contenu, $action);
+                        $idArticle = intval($_GET['art_id']);
+
+                        $this->controlAdmin->updateArticle($idArticle);
                         break;
 
                     // Suppression
@@ -244,13 +231,5 @@ class Routeur
         $vue->generer(array('msgErreur' => $msgErreur));
     }
 
-    // Recherche un paramètre dans un tableau
-    private function getParametre($tableau, $user_name)
-    {
-        if (isset($tableau[$user_name])) {
-            return $tableau[$user_name];
-        } else
-            throw new Exception("Paramètre '$user_name' absent");
-    }
 
 }

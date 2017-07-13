@@ -3,9 +3,10 @@
 require_once 'Modele/Article.php';
 require_once 'Modele/Commentaire.php';
 require_once 'Vue/Vue.php';
+require_once 'Controleur/Controleur.php';
 
 
-class ControleurCommentaire
+class ControleurCommentaire extends Controleur
 {
 
     private $article;
@@ -14,8 +15,8 @@ class ControleurCommentaire
 
     public function __construct()
     {
-        $this->article = new Article();
-        $this->commentaire = new Commentaire();
+        $this->article = new ArticleRepository();
+        $this->commentaire = new CommentaireRepository();
     }
 
     // Affiche les détails d'un commentaire sur une nouvelle page
@@ -24,9 +25,10 @@ class ControleurCommentaire
      */
     public function commentaire($idCommentaire)
     {
+
         $commentaire = $this->commentaire->getCommentaire($idCommentaire);
         $vue = new Vue("Commentaire");
-        $vue->generer(array('commentaire' => $commentaire));
+        $vue->generer(array('CommentaireRepository' => $commentaire));
     }
 
 
@@ -36,12 +38,17 @@ class ControleurCommentaire
      * @param string $contenu
      * @param int $idArticle
      */
-    public function commenter($com_author, $contenu, $idArticle)
+    public function commenter()
     {
+        // Sauvegarde du commentaire
+        $com_author = $this->getParametre($_POST, 'com_author');
+        $contenu = $this->getParametre($_POST, 'com_content');
+        $idArticle = $this->getParametre($_POST, 'art_id');
+        $this->commentaire->ajouterCommentaire($com_author, $contenu, $idArticle);
+
         // Test les variables $com_author & $contenu
         if (!empty($com_author) && !empty($contenu)) {
-            // Sauvegarde du commentaire
-            $this->commentaire->ajouterCommentaire($com_author, $contenu, $idArticle);
+
             // Actualisation de l'affichage du article
             header('Location: index.php?action=article&art_id=' . $idArticle);
             $_SESSION['flash'] = 'Votre commentaire est publié.';
@@ -60,20 +67,28 @@ class ControleurCommentaire
      * @param int $idArticle
      * @param int $idCommentaire
      */
-    public function repondre($com_author, $contenu, $idArticle, $idCommentaire)
+    public function repondre()
     {
+
+        $com_author = $this->getParametre($_POST, 'com_author');
+        $contenu = $this->getParametre($_POST, 'com_content');
+        $idArticle = $this->getParametre($_POST, 'art_id');
+        $idCommentaire = $this->getParametre($_POST, 'com_id');
+
         if (!empty($com_author) && !empty($contenu)) {
+
+
 
             // Sauvegarde du commentaire
             $this->commentaire->repondreCommentaire($com_author, $contenu, $idArticle, $idCommentaire);
 
             // Actualisation de l'affichage du article
-            header('Location: index.php?action=article&art_id=' . $idArticle);
+            header('Location: index.php?action=article&art_id=' . $idArticle );
             $_SESSION['flash'] = 'Votre commentaire est publié.';
         }
         else {
             $_SESSION['flash'] = 'Veuillez renseigner tous les champs du formulaire.';
-            header('Location: index.php?action=article&art_id=' . $idArticle);
+            header('Location: index.php?action=article&art_id=' . $idArticle );
         }
     }
 

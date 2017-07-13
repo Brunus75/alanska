@@ -43,7 +43,7 @@
                     <li><a href="<?= "index.php#episodes" ?>">Liste des articles</a></li>
                 </ul>
                 <?php
-                if (isset($_SESSION['user'])) {
+                if (isset($_SESSION['UserRepository'])) {
                     echo '<ul>';
                     echo '<div class="nav navbar-nav navbar-right">';
                     echo '<li><a href="' . "index.php?action=adminAccueil" . '">Page Administration';

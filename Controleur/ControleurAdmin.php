@@ -6,7 +6,7 @@ require_once 'Modele/User.php';
 require_once 'Vue/Vue.php';
 
 
-class ControleurAdmin
+class ControleurAdmin extends Controleur
 {
 
     private $article;
@@ -17,9 +17,9 @@ class ControleurAdmin
     public
     function __construct()
     {
-        $this->article = new Article();
-        $this->commentaire = new Commentaire();
-        $this->user = new User();
+        $this->article = new ArticleRepository();
+        $this->commentaire = new CommentaireRepository();
+        $this->user = new UserRepository();
     }
 
 
@@ -30,7 +30,7 @@ class ControleurAdmin
     public
     function adminAccueil()
     {
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['UserRepository'])) {
             $adminArticles = $this->article->getAdminArticles();
             $vue = new Vue("AdminAccueil");
             $vue->generer(array ('adminArticles' => $adminArticles));
@@ -45,7 +45,7 @@ class ControleurAdmin
     public
     function ajouterArticle()
     {
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['UserRepository'])) {
             $vue = new Vue("AjouterArticle");
             $vue->generer(array ());
         } else {
@@ -64,10 +64,10 @@ class ControleurAdmin
     function modifierArticle(
         $idArticle
     ) {
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['UserRepository'])) {
             $article = $this->article->getArticle($idArticle);
             $vue = new Vue("ModifierArticle");
-            $vue->generer(array ('article' => $article));
+            $vue->generer(array ('ArticleRepository' => $article));
         } else {
             $_SESSION['flash'] = 'Vous n\'êtes pas autorisé à effectuer cette commande.';
             header('Location: index.php?action=accueil');
@@ -79,7 +79,7 @@ class ControleurAdmin
     public
     function adminCommentaires()
     {
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['UserRepository'])) {
             $nbSignalements = $this->commentaire->getNbSignalements();
             $adminCommentaires = $this->commentaire->getAdminCommentaires();
             $vue = new Vue("AdminCommentaires");
@@ -101,14 +101,14 @@ class ControleurAdmin
      */
 
     public
-    function addArticle(
-        $art_title,
-        $contenu,
-        $action
-    ) {
+    function addArticle() {
+
+        $art_title = $this->getParametre($_POST, 'art_title');
+        $contenu = $this->getParametre($_POST, 'art_content');
+        $action = $this->getParametre($_POST, 'action');
 
         if (!empty($art_title) && !empty($contenu)) {
-            if (isset($_SESSION['user'])) {
+            if (isset($_SESSION['UserRepository'])) {
                 if ($action == 'brouillon') {
 
                     $this->article->brouillonArticle($art_title, $contenu);
@@ -144,14 +144,14 @@ class ControleurAdmin
 
     public
     function updateArticle(
-        $idArticle,
-        $art_title,
-        $contenu,
-        $action
-    ) {
+        $idArticle) {
+
+        $art_title = $this->getParametre($_POST, 'art_title');
+        $contenu = $this->getParametre($_POST, 'art_content');
+        $action = $this->getParametre($_POST, 'action');
 
         if (!empty($art_title) && !empty($contenu)) {
-            if (isset($_SESSION['user'])) {
+            if (isset($_SESSION['UserRepository'])) {
                 if ($action == 'Brouillon') {
                     $this->article->brouillonUpdate($idArticle, $art_title, $contenu);
                     $_SESSION['flash'] = 'Vos modifications sont sauvegardées en brouillon.';
@@ -185,7 +185,7 @@ class ControleurAdmin
     function deleteArticle(
         $idArticle
     ) {
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['UserRepository'])) {
             $this->article->deleteArticle($idArticle);
             $adminArticles = $this->article->getAdminArticles();
             $_SESSION['flash'] = 'L\'article n\'est plus publié. Vous pouvez néamoins toujours le retrouver sur cette page dans la liste des articles.';
@@ -212,7 +212,7 @@ class ControleurAdmin
 
     public function deleteCommentaire($idCommentaire)
     {
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['UserRepository'])) {
             $this->commentaire->deleteCommentaire($idCommentaire);
             $this->commentaire->deleteSousCommentaire($idCommentaire);
             $this->commentaire->annulerSignalement($idCommentaire);
@@ -236,7 +236,7 @@ class ControleurAdmin
         public
         function annulerSignalement($idCommentaire)
         {
-            if (isset($_SESSION['user'])) {
+            if (isset($_SESSION['UserRepository'])) {
                 $this->commentaire->annulerSignalement($idCommentaire);
                 $nbSignalements = $this->commentaire->getNbSignalements();
                 $adminCommentaires = $this->commentaire->getAdminCommentaires();

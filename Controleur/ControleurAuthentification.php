@@ -6,7 +6,7 @@ require_once 'Modele/User.php';
 
 require_once 'Vue/Vue.php';
 
-class ControleurAuthentification
+class ControleurAuthentification extends Controleur
 {
 
     private $user;
@@ -15,7 +15,7 @@ class ControleurAuthentification
     public
     function __construct()
     {
-        $this->user = new User();
+        $this->user = new UserRepository();
     }
 
 
@@ -35,30 +35,33 @@ class ControleurAuthentification
      * @param string $user_password
      */
     public
-    function connexion(
-        $user_pseudo,
-        $user_password
-    ) {
+    function connexion()
+
+    {
+
+        $user_pseudo = $this->getParametre($_POST, 'user_pseudo');
+        $user_password = $this->getParametre($_POST, 'user_password');
+
         $user = $this->user->getUser($user_pseudo, $user_password);
 
         if (!empty($user_pseudo) && !empty($user_password)) {
             if ($user) {
-                if (isset($_SESSION['user'])) {
-                    if (htmlspecialchars($user_pseudo) !== $_SESSION['user']['user_pseudo']) {
+                if (isset($_SESSION['UserRepository'])) {
+                    if (htmlspecialchars($user_pseudo) !== $_SESSION['UserRepository']['user_pseudo']) {
                         $_SESSION['flash'] = 'Attention. Vous êtes sur la session de '.htmlspecialchars(
-                                $_SESSION['user']['user_firstname']
+                                $_SESSION['UserRepository']['user_firstname']
                             ).'. Vous devez déconnecter l utilisateur  pour pouvoir vous connecter';
                         header('Location: index.php?action=accueil');
                     } else {
                         $_SESSION['flash'] = 'Rebonjour '.htmlspecialchars(
-                                $_SESSION['user']['user_firstname']
+                                $_SESSION['UserRepository']['user_firstname']
                             ).'. Vous êtes déjà connecté.';
                         header('Location: index.php?action=adminAccueil');
                     }
                 } else {
-                    $_SESSION['user'] = $user;
+                    $_SESSION['UserRepository'] = $user;
                     $_SESSION['flash'] = 'Bonjour '.htmlspecialchars(
-                            $_SESSION['user']['user_firstname']
+                            $_SESSION['UserRepository']['user_firstname']
                         ).'. Vous êtes désormais connecté';
                     header('Location: index.php?action=adminAccueil');
                 }
@@ -76,7 +79,7 @@ class ControleurAuthentification
     public
     function deconnexion()
     {
-        unset($_SESSION['user']);
+        unset($_SESSION['UserRepository']);
         session_destroy();
         header('Location: index.php?action=accueil');
     }

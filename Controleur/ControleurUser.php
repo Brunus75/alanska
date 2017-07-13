@@ -11,7 +11,7 @@ class ControleurUser
 
     public function __construct()
     {
-        $this->user = new User();
+        $this->user = new UserRepository();
     }
 
     // Affiche la liste des membres
@@ -29,11 +29,19 @@ class ControleurUser
      * @param string $user_pseudo
      * @param string $user_password
      */
-    public function inscription($user_firstname, $user_name, $user_pseudo, $user_password)
+    public function inscription()
     {
 
+        $user_firstname = $this->getParametre($_POST, 'user_firstname');
+        $user_name = $this->getParametre($_POST, 'user_name');
+        $user_pseudo = $this->getParametre($_POST, 'user_pseudo');
+        $user_password = $this->getParametre($_POST, 'user_password');
+
         if (!empty($user_pseudo) && !empty($user_password)) {
-            if (isset($_SESSION['user'])) {
+
+
+
+            if (isset($_SESSION['UserRepository'])) {
                 $pseudoExist = $this->user->getPseudoExist($user_pseudo);
                 if ($pseudoExist == 0) {
                     $this->user->inscription($user_firstname, $user_name, $user_pseudo, $user_password);
@@ -64,7 +72,7 @@ class ControleurUser
      */
     public function deleteUser($idUser)
     {
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['UserRepository'])) {
             $this->user->deleteUser($idUser);
             $users = $this->user->getUsers();
             $_SESSION['flash'] = 'Nous confirmons votre suppression.';

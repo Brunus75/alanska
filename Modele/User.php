@@ -1,70 +1,133 @@
 <?php
 
-require_once 'Modele.php';
+/**
+ * Created by PhpStorm.
+ * User: leconte_bruno
+ * Date: 14/07/2017
+ * Time: 00:40
+ */
+class User
+{
+    private $user_id;
+    private $user_date;
+    private $user_name;
+    private $user_firstname;
+    private $user_pseudo;
+    private $user_password;
 
-Class User extends  Modele {
-
-    // Renvoie la liste des membres
     /**
-     * @return PDOStatement
-     */
-    public function getUsers() {
-        $sql = 'SELECT *, DATE_FORMAT (user_date, \'%d/%m/%Y à %H:%i:%s\') AS date_fr FROM user ORDER BY user_id ASC';
-        $users = $this->executerRequete($sql);
-        return $users;
-    }
-
-    // Renvoie les infos d'un membre
-    /**
-     * @param string $user_pseudo
-     * @param string $user_password
      * @return mixed
      */
-    public function getUser($user_pseudo, $user_password)
+    public
+    function getUserId()
     {
-        $sql = 'SELECT *, DATE_FORMAT (user_date, \'%d/%m/%Y à %H:%i:%s\') AS date_fr FROM user WHERE user_pseudo=? AND user_password=?';
-        $pwd = sha1($user_password);
-        $user = $this->executerRequete($sql, array($user_pseudo, $pwd));
-        return $user->fetch();  // Accès à la première ligne de résultat
+        return $this->user_id;
     }
 
-    //$pwd = sha1($user_password);
-//$user = $this->executerRequete($sql, array($user_pseudo, $pwd));
-//return $user->fetch();  // Accès à la première ligne de résultat
+    /**
+     * @param mixed $user_id
+     */
+    public
+    function setUserId(
+        $user_id
+    ) {
+        $this->user_id = $user_id;
+    }
 
     /**
-     * @param string $user_pseudo
      * @return mixed
      */
-    public function getPseudoExist($user_pseudo)
+    public
+    function getUserDate()
     {
-        $sql = 'SELECT COUNT(*) AS total FROM user WHERE user_pseudo="' . $user_pseudo . '"';
-        $result = $this->executerRequete($sql);
-        $nb = $result->fetch();
-        $pseudoExist = $nb['total'];
-        return $pseudoExist;
+        return $this->user_date;
     }
 
-// inscrire un nouveau membre
     /**
-     * @param string $user_firstname
-     * @param string $user_name
-     * @param string $user_pseudo
-     * @param string $user_password
+     * @param mixed $user_date
      */
-    public function inscription($user_firstname, $user_name, $user_pseudo, $user_password){
-        $pwd = sha1($user_password);
-        $sql = 'INSERT INTO user(user_date, user_firstname, user_name, user_pseudo, user_password) values(?, ?, ?, ?, ?)';
-        $date = date(DATE_W3C);  // Récupère la date courante
-        $this->executerRequete($sql, array($date, $user_firstname, $user_name, $user_pseudo, $pwd));
-   }
-
-    // Désinscrire un membre
-    /**
-     * @param int $user_id
-     */
-    public function deleteUser($user_id){
-        $sql = 'DELETE FROM user WHERE user_id=?';
-        $this->executerRequete($sql, array($user_id));
+    public
+    function setUserDate(
+        $user_date
+    ) {
+        $this->user_date = $user_date;
     }
+
+    /**
+     * @return mixed
+     */
+    public
+    function getUserName()
+    {
+        return $this->user_name;
+    }
+
+    /**
+     * @param mixed $user_name
+     */
+    public
+    function setUserName(
+        $user_name
+    ) {
+        $this->user_name = $user_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public
+    function getUserFirstname()
+    {
+        return $this->user_firstname;
+    }
+
+    /**
+     * @param mixed $user_firstname
+     */
+    public
+    function setUserFirstname(
+        $user_firstname
+    ) {
+        $this->user_firstname = $user_firstname;
+    }
+
+    /**
+     * @return mixed
+     */
+    public
+    function getUserPseudo()
+    {
+        return $this->user_pseudo;
+    }
+
+    /**
+     * @param mixed $user_pseudo
+     */
+    public
+    function setUserPseudo(
+        $user_pseudo
+    ) {
+        $this->user_pseudo = $user_pseudo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public
+    function getUserPassword()
+    {
+        return $this->user_password;
+    }
+
+    /**
+     * @param mixed $user_password
+     */
+    public
+    function setUserPassword(
+        $user_password
+    ) {
+        $this->user_password = $user_password;
+    }
+
+    
 }
