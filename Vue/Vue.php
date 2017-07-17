@@ -6,7 +6,8 @@ class Vue {
     private $fichier;
     
     // Titre de la vue (défini dans le fichier vue)
-    private $art_title;
+    //private $art_title;
+    protected $art_title;
 
     public function __construct($action) {
         // Détermination du nom du fichier vue à partir de l'action
@@ -16,16 +17,23 @@ class Vue {
     // Génère et affiche la vue
     public function generer($donnees) {
         // Génération de la partie spécifique de la vue
-        $contenu = $this->genererFichier($this->fichier, $donnees);
+        $art_content = $this->genererFichier($this->fichier, $donnees);
         // Génération du gabarit commun utilisant la partie spécifique
         $vue = $this->genererFichier('Vue/template.php',
-                array('titre' => $this->titre, 'contenu' => $contenu));
+                array('titre' => $this->art_title, 'contenu' => $art_content));
         // Renvoi de la vue au navigateur
         echo $vue;
         unset( $_SESSION['flash']);
     }
 
     // Génère un fichier vue et renvoie le résultat produit
+
+    /**
+     * @param $fichier
+     * @param $donnees
+     * @return string
+     * @throws Exception
+     */
     private function genererFichier($fichier, $donnees) {
         if (file_exists($fichier)) {
             // Rend les éléments du tableau $donnees accessibles dans la vue

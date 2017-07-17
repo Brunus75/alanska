@@ -1,10 +1,11 @@
 <?php
 
-require_once 'Modele/Article.php';
-require_once 'Modele/Commentaire.php';
-require_once 'Modele/User.php';
-require_once 'Vue/Vue.php';
+namespace Alanska\Controleur;
 
+use Alanska\Modele\Article;
+use Alanska\Modele\Commentaire;
+use Alanska\Modele\User;
+use Vue;
 
 class ControleurAdmin extends Controleur
 {
@@ -17,9 +18,9 @@ class ControleurAdmin extends Controleur
     public
     function __construct()
     {
-        $this->article = new ArticleRepository();
-        $this->commentaire = new CommentaireRepository();
-        $this->user = new UserRepository();
+        $this->article = new Article();
+        $this->commentaire = new Commentaire();
+        $this->user = new User();
     }
 
 
@@ -31,7 +32,7 @@ class ControleurAdmin extends Controleur
     function adminAccueil()
     {
         if (isset($_SESSION['UserRepository'])) {
-            $adminArticles = $this->article->getAdminArticles();
+            $adminArticles = $this-> article ->getAdminArticles();
             $vue = new Vue("AdminAccueil");
             $vue->generer(array ('adminArticles' => $adminArticles));
         } else {
@@ -57,15 +58,13 @@ class ControleurAdmin extends Controleur
     // Affiche la page " modifierArticle "
 
     /**
-     * @param int $idArticle
+     * @param int $art_id
      */
 
     public
-    function modifierArticle(
-        $idArticle
-    ) {
+    function modifierArticle($art_id) {
         if (isset($_SESSION['UserRepository'])) {
-            $article = $this->article->getArticle($idArticle);
+            $article = $this-> article->getArticle($art_id);
             $vue = new Vue("ModifierArticle");
             $vue->generer(array ('ArticleRepository' => $article));
         } else {
@@ -80,8 +79,8 @@ class ControleurAdmin extends Controleur
     function adminCommentaires()
     {
         if (isset($_SESSION['UserRepository'])) {
-            $nbSignalements = $this->commentaire->getNbSignalements();
-            $adminCommentaires = $this->commentaire->getAdminCommentaires();
+            $nbSignalements = $this-> commentaire ->getNbSignalements();
+            $adminCommentaires = $this-> commentaire ->getAdminCommentaires();
             $vue = new Vue("AdminCommentaires");
             $vue->generer(array ('adminCommentaires' => $adminCommentaires, 'nbSignalements' => $nbSignalements));
         } else {
@@ -96,7 +95,7 @@ class ControleurAdmin extends Controleur
     // Ajouter un article
     /**
      * @param string $art_title
-     * @param string $ontenu
+     * @param string $art_content
      * @param string $action
      */
 
@@ -104,19 +103,19 @@ class ControleurAdmin extends Controleur
     function addArticle() {
 
         $art_title = $this->getParametre($_POST, 'art_title');
-        $contenu = $this->getParametre($_POST, 'art_content');
+        $art_content = $this->getParametre($_POST, 'art_content');
         $action = $this->getParametre($_POST, 'action');
 
-        if (!empty($art_title) && !empty($contenu)) {
+        if (!empty($art_title) && !empty($art_content)) {
             if (isset($_SESSION['UserRepository'])) {
                 if ($action == 'brouillon') {
 
-                    $this->article->brouillonArticle($art_title, $contenu);
+                    $this-> article->brouillonArticle($art_title, $art_content);
                     $_SESSION['flash'] = 'Votre article est sauvegardé en brouillon.';
                     header('Location: index.php?action=adminAccueil');
                 } else {
                     if ($action == 'publier') {
-                        $this->article->publierArticle($art_title, $contenu);
+                        $this-> article->publierArticle($art_title, $art_content);
                         $_SESSION['flash'] = 'Votre article est publié.';
                         header('Location: index.php?action=adminAccueil');
                     }
@@ -136,29 +135,31 @@ class ControleurAdmin extends Controleur
     // Modifier un article
 
     /**
-     * @param int $idArticle
+     * @param int $art_id
      * @param string $art_title
-     * @param string $contenu
+     * @param string $art_content
      * @param string $action
      */
 
     public
-    function updateArticle(
-        $idArticle) {
+    function updateArticle()
+    {
 
+        $art_id = $this -> getParametre/*(intval*/($_GET, 'art_id');
+        //$art_id = intval($_GET['art_id']);
         $art_title = $this->getParametre($_POST, 'art_title');
-        $contenu = $this->getParametre($_POST, 'art_content');
+        $art_content = $this->getParametre($_POST, 'art_content');
         $action = $this->getParametre($_POST, 'action');
 
-        if (!empty($art_title) && !empty($contenu)) {
+        if (!empty($art_title) && !empty($art_content)) {
             if (isset($_SESSION['UserRepository'])) {
                 if ($action == 'Brouillon') {
-                    $this->article->brouillonUpdate($idArticle, $art_title, $contenu);
+                    $this-> article ->brouillonUpdate($art_id, $art_title, $art_content);
                     $_SESSION['flash'] = 'Vos modifications sont sauvegardées en brouillon.';
                     header('Location: index.php?action=adminAccueil');
                 } else {
                     if ($action == 'Publier') {
-                        $this->article->publierUpdate($idArticle, $art_title, $contenu);
+                        $this-> article ->publierUpdate($art_id, $art_title, $art_content);
                         $_SESSION['flash'] = 'Votre article modifié est publié.';
                         header('Location: index.php?action=adminAccueil');
                     }
@@ -169,7 +170,7 @@ class ControleurAdmin extends Controleur
             }
         } else {
             $_SESSION['flash'] = 'Veuillez renseigner tous les champs du formulaire.';
-            header('Location: index.php?action=modifierArticle&art_id='.$idArticle);
+            header('Location: index.php?action=modifierArticle&art_id='.$art_id);
         }
 
     }
@@ -178,16 +179,17 @@ class ControleurAdmin extends Controleur
     // supprimer un article
 
     /**
-     * @param int $idArticle
+     * @param int $art_id
      */
 
     public
-    function deleteArticle(
-        $idArticle
-    ) {
+    function deleteArticle()
+    {
+        $art_id = $this -> getParametre/*(intval*/($_GET, 'art_id');
+
         if (isset($_SESSION['UserRepository'])) {
-            $this->article->deleteArticle($idArticle);
-            $adminArticles = $this->article->getAdminArticles();
+            $this-> article ->deleteArticle($art_id);
+            $adminArticles = $this-> article ->getAdminArticles();
             $_SESSION['flash'] = 'L\'article n\'est plus publié. Vous pouvez néamoins toujours le retrouver sur cette page dans la liste des articles.';
             $vue = new Vue("AdminAccueil");
             $vue->generer(array ('adminArticles' => $adminArticles));
@@ -202,22 +204,23 @@ class ControleurAdmin extends Controleur
 
     // Supprimer un commentaire avec Enfant
     /**
-     * @param int $idCommentaire
+     * @param int $com_id
      */
 
 // Supprimer un commentaire avec Enfant
     /**
-     * @param int $idCommentaire
+     * @param int $com_id
      */
 
-    public function deleteCommentaire($idCommentaire)
+    public function deleteCommentaire()
     {
+        $com_id = $this -> getParametre/*(intval*/($_GET, 'com_id');
         if (isset($_SESSION['UserRepository'])) {
-            $this->commentaire->deleteCommentaire($idCommentaire);
-            $this->commentaire->deleteSousCommentaire($idCommentaire);
-            $this->commentaire->annulerSignalement($idCommentaire);
-            $nbSignalements = $this->commentaire->getNbSignalements();
-            $adminCommentaires = $this->commentaire->getAdminCommentaires();
+            $this-> commentaire ->deleteCommentaire($com_id);
+            $this-> commentaire ->deleteSousCommentaire($com_id);
+            $this-> commentaire ->annulerSignalement($com_id);
+            $nbSignalements = $this-> commentaire->getNbSignalements();
+            $adminCommentaires = $this-> commentaire ->getAdminCommentaires();
             $_SESSION['flash'] = 'Le commentaire est supprimé.';
             $vue = new Vue("AdminCommentaires");
             $vue->generer(array('adminCommentaires' => $adminCommentaires, 'nbSignalements' => $nbSignalements));
@@ -230,16 +233,17 @@ class ControleurAdmin extends Controleur
 
         // Annuler un com_signale
         /**
-         * @param int $idCommentaire
+         * @param int $com_id
          */
 
         public
-        function annulerSignalement($idCommentaire)
+        function annulerSignalement()
         {
+            $com_id = $this->getParametre($_GET, 'com_id');
             if (isset($_SESSION['UserRepository'])) {
-                $this->commentaire->annulerSignalement($idCommentaire);
-                $nbSignalements = $this->commentaire->getNbSignalements();
-                $adminCommentaires = $this->commentaire->getAdminCommentaires();
+                $this-> commentaire ->annulerSignalement($com_id);
+                $nbSignalements = $this-> commentaire ->getNbSignalements();
+                $adminCommentaires = $this-> commentaire ->getAdminCommentaires();
                 $_SESSION['flash'] = 'Le commentaire n\'est plus signalé.';
                 $vue = new Vue("AdminCommentaires");
                 $vue->generer(array ('adminCommentaires' => $adminCommentaires, 'nbSignalements' => $nbSignalements));

@@ -1,14 +1,11 @@
 <?php
 
-require_once 'ControleurAccueil.php';
-require_once 'ControleurArticle.php';
-require_once 'ControleurAuthentification.php';
-require_once 'ControleurCommentaire.php';
-require_once 'ControleurAdmin.php';
-require_once 'ControleurUser.php';
+namespace Alanska\Controleur;
 
+use PHPUnit\Runner\Exception;
+use Vue;
 
-require_once 'Vue/Vue.php';
+require_once '../Vue/Vue.php';
 
 class Routeur
 {
@@ -52,18 +49,18 @@ class Routeur
 
                     // Afficher de la page d'un commentaire avec formulaire
                     case 'CommentaireRepository' :
-                        $idCommentaire = intval($_GET['com_id']);
-                        if ($idCommentaire != 0) {
-                            $this->controlCommentaire->commentaire($idCommentaire);
+                        $com_id = intval($_GET['com_id']);
+                        if ($com_id != 0) {
+                            $this->controlCommentaire->commentaire($com_id);
                         } else
                             throw new Exception("Identifiant de commentaire non valide");
                         break;
 
                     //Afficher la page d'un article
                     case 'ArticleRepository' :
-                        $idArticle = intval($_GET['art_id']);
-                        if ($idArticle != 0) {
-                            $this->controlArticle->article($idArticle);
+                        $art_id = intval($_GET['art_id']);
+                        if ($art_id != 0) {
+                            $this->controlArticle->article($art_id);
                         } else
                             throw new Exception("Identifiant de article non valide");
                         break;
@@ -96,7 +93,7 @@ class Routeur
                     // Signaler un commentaire
                     case 'signalerCommentaire' :
 
-                        $this->controlCommentaire->signalerCommentaire($this->getParametre($_GET, 'com_id'));
+                        $this->controlCommentaire->signalerCommentaire();
                         break;
 
 
@@ -113,16 +110,16 @@ class Routeur
                     // Affiche la page Admin Commentaires
                     case 'adminCommentaires':
 
-                        $this->controlAdmin->adminCommentaires(/*$idArticle*/);
+                        $this->controlAdmin->adminCommentaires(/*$art_id*/);
 
                         break;
 
                     // Afficher la page modifier Article avec le article à modifier
                     case 'modifierArticle':
 
-                        $idArticle = intval($_GET['art_id']);
-                        if ($idArticle != 0) {
-                            $this->controlAdmin->modifierArticle($idArticle);
+                        $art_id = intval($_GET['art_id']);
+                        if ($art_id != 0) {
+                            $this->controlAdmin->modifierArticle($art_id);
                         }
                         else {
                             throw new Exception("Identifiant d'article non valide");
@@ -165,8 +162,8 @@ class Routeur
 
                     // Suppression
                     case 'deleteUser' :
-
-                        $this->controlUser->deleteUser($this->getParametre($_GET, 'user_id'));
+                        //$user_id =($_GET['user_id']);
+                        $this->controlUser->deleteUser();
                         break;
 
 
@@ -182,15 +179,15 @@ class Routeur
                     // Modification : non validé  ou validé
                     case 'updateArticle' :
 
-                        $idArticle = intval($_GET['art_id']);
+                       // $art_id = intval($_GET['art_id']);
 
-                        $this->controlAdmin->updateArticle($idArticle);
+                        $this->controlAdmin->updateArticle();
                         break;
 
                     // Suppression
                     case 'deleteArticle' :
-
-                        $this->controlAdmin->deleteArticle($this->getParametre($_GET, 'art_id'));
+                        //$art_id = intval($_GET['art_id']);
+                        $this->controlAdmin->deleteArticle();
                         break;
 
         // 4 - Gestion des commentaires
@@ -198,14 +195,13 @@ class Routeur
                     // Annuler un signalement
                     case 'annulerSignalement' :
 
-                        $this->controlAdmin->annulerSignalement($this->getParametre($_GET, 'com_id'));
+                        $this->controlAdmin->annulerSignalement();
                         break;
 
                     // Supprimer un commentaire (Modération) avec les enfants (suppresion)
                     case 'supprimerCommentaire':
 
-                        $idCommentaire = $this->getParametre($_GET, 'com_id');
-                        $this->controlAdmin->deleteCommentaire($idCommentaire);
+                        $this->controlAdmin->deleteCommentaire();
                         break;
 
                     default :

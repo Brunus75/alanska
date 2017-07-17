@@ -1,23 +1,25 @@
 <?php
 //session_start()
 
-require_once 'Modele/User.php';
-require_once 'Vue/Vue.php';
+namespace Alanska\Controleur;
 
-class ControleurUser
+use Alanska\Modele\User;
+use Vue;
+
+class ControleurUser extends Controleur
 {
 
     private $user;
 
     public function __construct()
     {
-        $this->user = new UserRepository();
+        $this->user = new User();
     }
 
     // Affiche la liste des membres
     public function users()
     {
-        $users = $this->user->getusers();
+        $users = $this-> user ->getusers();
         $vue = new Vue("Membres");
         $vue->generer(array('users' => $users));
     }
@@ -68,12 +70,13 @@ class ControleurUser
 
     // désinscrire un membre
     /**
-     * @param int $idUser
+     * @param int $user_id
      */
-    public function deleteUser($idUser)
+    public function deleteUser()
     {
         if (isset($_SESSION['UserRepository'])) {
-            $this->user->deleteUser($idUser);
+            $user_id = $this->getParametre($_GET, 'user_id');
+            $this->user->deleteUser($user_id);
             $users = $this->user->getUsers();
             $_SESSION['flash'] = 'Nous confirmons votre suppression.';
             $vue = new Vue("Membres");

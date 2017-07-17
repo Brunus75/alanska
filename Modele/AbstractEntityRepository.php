@@ -1,7 +1,7 @@
 <?php
 
 
-abstract class Modele {
+abstract class AbstractEntityRepository {
 
     /** Objet PDO d'accès à la BD */
     private $bdd;
@@ -43,7 +43,5 @@ abstract class Modele {
         }
         return $this->bdd;
     }
-
-
 
 }

@@ -1,12 +1,17 @@
 <?php
 
+namespace Alanska\Modele;
+
+
+
+
 /**
  * Created by PhpStorm.
  * User: leconte_bruno
  * Date: 13/07/2017
  * Time: 19:54
  */
-class Article
+class Article extends ArticleRepository
 {
     private $art_id;
     private $art_title;

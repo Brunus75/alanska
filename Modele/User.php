@@ -1,12 +1,16 @@
 <?php
 
+namespace Alanska\Modele;
+
+
+
 /**
  * Created by PhpStorm.
  * User: leconte_bruno
  * Date: 14/07/2017
  * Time: 00:40
  */
-class User
+class User extends UserRepository
 {
     private $user_id;
     private $user_date;

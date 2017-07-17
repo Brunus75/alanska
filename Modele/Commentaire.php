@@ -1,12 +1,14 @@
 <?php
 
+namespace Alanska\Modele;
+
 /**
  * Created by PhpStorm.
  * User: leconte_bruno
  * Date: 13/07/2017
  * Time: 23:51
  */
-class Commentaire
+class Commentaire extends CommentaireRepository
 {
     private $com_id;
     private $com_author;

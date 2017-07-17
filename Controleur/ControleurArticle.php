@@ -1,11 +1,12 @@
 <?php
 
-require_once 'Modele/Article.php';
-require_once 'Modele/Commentaire.php';
-require_once 'Vue/Vue.php';
+namespace Alanska\Controleur;
 
+use Alanska\Modele\Article;
+use Alanska\Modele\Commentaire;
+use Vue;
 
-class ControleurArticle
+class ControleurArticle extends Controleur
 {
 
     private $article;
@@ -15,21 +16,19 @@ class ControleurArticle
     public
     function __construct()
     {
-        $this->article = new ArticleRepository();
-        $this->commentaire = new CommentaireRepository();
+        $this->article = new Article();
+        $this->commentaire = new Commentaire();
     }
 
     // Affiche les détails sur un article
 
     /**
-     * @param int $idArticle
+     * @param int $art_id
      */
     public
-    function article(
-        $idArticle
-    ) {
-        $article = $this->article->getArticle($idArticle);
-        $commentaires = $this->commentaire->getCommentaires($idArticle);
+    function article($art_id) {
+        $article = $this-> article ->getArticle($art_id);
+        $commentaires = $this-> commentaire ->getCommentaires($art_id);
         $vue = new Vue("Article");
         $vue->generer(
             array ('ArticleRepository' => $article, 'commentaires' => $commentaires, "commentaireModele" => $this->commentaire)

@@ -1,10 +1,9 @@
 <?php
 
-require_once 'Modele/Article.php';
-require_once 'Modele/Commentaire.php';
-require_once 'Modele/User.php';
+namespace Alanska\Controleur;
 
-require_once 'Vue/Vue.php';
+use Alanska\Modele\User;
+use Vue;
 
 class ControleurAuthentification extends Controleur
 {
@@ -15,7 +14,7 @@ class ControleurAuthentification extends Controleur
     public
     function __construct()
     {
-        $this->user = new UserRepository();
+        $this->user = new User();
     }
 
 
@@ -42,7 +41,7 @@ class ControleurAuthentification extends Controleur
         $user_pseudo = $this->getParametre($_POST, 'user_pseudo');
         $user_password = $this->getParametre($_POST, 'user_password');
 
-        $user = $this->user->getUser($user_pseudo, $user_password);
+        $user = $this-> user ->getUser($user_pseudo, $user_password);
 
         if (!empty($user_pseudo) && !empty($user_password)) {
             if ($user) {

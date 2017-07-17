@@ -1,12 +1,19 @@
 <?php
 
-require_once 'Modele.php';
+namespace Alanska\Modele;
 
-Class UserRepository extends  Modele {
+// use Alanska\Modele\User;
+
+//require_once 'AbstractEntityRepository.php';
+//require_once 'User.php';
+
+use AbstractEntityRepository;
+
+Class UserRepository extends AbstractEntityRepository {
 
     // Renvoie la liste des membres
     /**
-     * @return PDOStatement
+     *
      */
     public function getUsers() {
         $sql = 'SELECT *, DATE_FORMAT (user_date, \'%d/%m/%Y à %H:%i:%s\') AS date_fr FROM user ORDER BY user_id ASC';

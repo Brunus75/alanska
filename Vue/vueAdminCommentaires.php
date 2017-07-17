@@ -43,7 +43,7 @@
                         </thead>
 
                         <tbody>
-                        <?php foreach ($adminCommentaires as $commentaire): ?>
+                        <?php foreach ( $adminCommentaires as $commentaire): ?>
                             <tr>
 
                                 <td>

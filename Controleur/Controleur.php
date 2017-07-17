@@ -1,5 +1,9 @@
 <?php
 
+namespace Alanska\Controleur;
+
+use PHPUnit\Runner\Exception;
+
 /**
  * Created by PhpStorm.
  * User: leconte_bruno
